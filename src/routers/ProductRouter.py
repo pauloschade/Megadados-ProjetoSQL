@@ -4,6 +4,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, status
 
 from domain.Product import Product
+from dto.ProductDto import ProductDto
 from services.ProductService import ProductService
 
 ProductRouter = APIRouter(
@@ -23,11 +24,10 @@ async def get(id: UUID, productService: ProductService = Depends()):
 
 @ProductRouter.post(
     "/",
-    response_model=Product,
     status_code=status.HTTP_201_CREATED,
 )
 async def create(
-    product: Product,
+    product: ProductDto,
     productService: ProductService = Depends(),
 ):
     return await productService.create(product)
@@ -36,7 +36,7 @@ async def create(
 @ProductRouter.patch("/{id}", response_model=Product)
 async def update(
     id: UUID,
-    product: Product,
+    product: ProductDto,
     productService: ProductService = Depends(),
 ):
     return await productService.update(id, product)

@@ -5,7 +5,7 @@ class UUIDBaseModel(BaseModel):
     """
     Base class for UUID-based models.
     """
-    uuid: uuid_pkg.UUID = Field(
+    id: uuid_pkg.UUID = Field(
         default_factory=uuid_pkg.uuid4,
         primary_key=True,
         index=True,

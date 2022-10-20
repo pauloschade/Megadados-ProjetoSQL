@@ -5,14 +5,12 @@ from fastapi import Depends
 
 from domain.Product import Product
 
-
+fake_db = []
 class ProductRepository:
     #TODO
 
     async def get(self) -> List[Product]:
-        #TODO
-        new_product = Product(name = "teste get", price = 1)
-        return [new_product]
+        return fake_db
 
     async def find(self, id: UUID) -> Product:
        #TODO
@@ -21,8 +19,7 @@ class ProductRepository:
        
 
     async def create(self, product: Product) -> Product:
-        #TODO
-        pass
+        fake_db.append(product)
 
     async def delete(self, id: UUID) -> None:
         #TODO

@@ -1,6 +1,4 @@
-from typing import Union
-
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
 from routers.ProductRouter import ProductRouter
 
