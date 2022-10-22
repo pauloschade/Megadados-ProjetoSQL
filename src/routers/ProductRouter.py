@@ -12,12 +12,24 @@ ProductRouter = APIRouter(
 )
 
 
-@ProductRouter.get("/", response_model=List[Product])
+@ProductRouter.get(
+    "/", 
+    response_model=List[Product],
+    summary = "Gets all registered products",
+    description = "Returns all products that are registered.\n \
+    IMPORTANT: even if we are out of any products, meaning that they are SOLD OUT, they will be returned by this endpoint"
+)
 async def index(productService: ProductService = Depends()):
     return await productService.get()
 
 
-@ProductRouter.get("/{id}", response_model=Product)
+@ProductRouter.get(
+    "/{id}", 
+    response_model=Product,
+    summary = "Gets a registered product",
+    description = "Returns the product with the specified ID.\n \
+        IMPORTANT: even if the product is SOLD OUT, it will be returned"
+)
 async def get(id: UUID, productService: ProductService = Depends()):
     return await productService.find(id)
 
@@ -25,6 +37,7 @@ async def get(id: UUID, productService: ProductService = Depends()):
 @ProductRouter.post(
     "/",
     status_code=status.HTTP_201_CREATED,
+    summary = "Registers a product"
 )
 async def create(
     product: ProductDto,
@@ -33,7 +46,12 @@ async def create(
     return await productService.create(product)
 
 
-@ProductRouter.patch("/{id}", response_model=Product)
+@ProductRouter.put(
+    "/{id}", 
+    response_model=Product,
+    summary = "Updates the details of a product",
+    description = "Takes in an ID and changes the product details"
+)
 async def update(
     id: UUID,
     product: ProductDto,
@@ -43,7 +61,11 @@ async def update(
 
 
 @ProductRouter.delete(
-    "/{id}", status_code=status.HTTP_204_NO_CONTENT
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary = "Deletes a product",
+    description = "Deletes the product with the given ID.\n \
+        IMPORTANT: If the product is available in stock, it will be erased there"
 )
 async def delete(
     id: UUID, productService: ProductService = Depends()

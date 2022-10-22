@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 from unicodedata import name
 import uuid
 from fastapi import Depends
@@ -22,17 +22,21 @@ class ProductService:
         return await self.productRepository.find(id)
 
     async def create(self, product: ProductDto) -> Product:
-        generated_id = uuid.uuid5(uuid.NAMESPACE_DNS, product.name)
-        new_product = Product(
-            id = generated_id,
-            name=product.name, 
-            price = product.price, 
-            description = product.description
-        )
+        new_product = self._generate_product(product)
         return await self.productRepository.create(new_product)
 
     async def delete(self, id: uuid.UUID) -> None:
         return await self.productRepository.delete(id)
 
     async def update(self, id: uuid.UUID, product: ProductDto) -> Product:
-        return await self.productRepository.update(id, product)
+        new_product = self._generate_product(product)
+        return await self.productRepository.update(id, new_product)
+
+    def _generate_product(self, product: ProductDto):
+        generated_id = uuid.uuid5(uuid.NAMESPACE_DNS, product.name)
+        return Product(
+            id = generated_id,
+            name=product.name, 
+            price = product.price, 
+            description = product.description
+        )
