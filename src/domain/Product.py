@@ -4,6 +4,11 @@ from typing import Optional
 from domain.base.UUIDBaseModel import UUIDBaseModel
 
 class Product(UUIDBaseModel):
+
+    """
+    Class for products to be registered
+    """
+
     name : str = Field(
         title = 'Product name',
         max_length=1024,

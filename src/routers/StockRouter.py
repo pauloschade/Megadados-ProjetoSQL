@@ -45,9 +45,22 @@ async def create(
 @StockRouter.delete(
     "/{id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    summary = "Removes a product to stock or decreases quantity (if not zero)",
+    summary = "Removes a product from stock"
 )
 async def delete(
     id: UUID, StockService: StockService = Depends()
 ):
-    return await StockService.delete_or_sub(id)
+    return await StockService.delete(id)
+
+@StockRouter.put(
+    "/{id}",
+    summary = "Updates a stock (quantity or product that is referencing)",
+    description = "If you change the product that the stock is referrencing to\
+        it's stock id will change as well"
+)
+async def update(
+    id: UUID,
+    stock: StockDto,
+    StockService: StockService = Depends()
+):
+    return await StockService.update(id, stock)

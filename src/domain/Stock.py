@@ -6,6 +6,10 @@ from domain.base.UUIDBaseModel import UUIDBaseModel
 
 class Stock(UUIDBaseModel):
 
+    """
+    Class for products in stock
+    """
+
     product_id : uuid_pkg.UUID = Field(
         title = 'Product in stock'
     )
