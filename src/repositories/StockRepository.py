@@ -35,6 +35,7 @@ class StockRepository:
 
     async def update(self, id: UUID, stock: Stock) -> Stock:
         for i in range(len(fake_stock_db)):
+            print(id)
             if fake_stock_db[i].id == id:
                 fake_stock_db[i] = stock
                 return stock
