@@ -65,7 +65,7 @@ async def update(
     status_code=status.HTTP_204_NO_CONTENT,
     summary = "Deletes a product",
     description = "Deletes the product with the given ID.\n \
-        IMPORTANT: If the product is available in stock, it will be erased there"
+        IMPORTANT: If the product is available in stock, it will be erased there (will be configured when integrated with database)"
 )
 async def delete(
     id: UUID, productService: ProductService = Depends()
