@@ -31,12 +31,12 @@ class StockRepository:
             if fake_stock_db[i].id == id:
                 fake_stock_db.pop(i)
                 return
-        raise HTTPException(status_code=404, detail="Product not in stock")
+        raise HTTPException(status_code=404, detail="Stock not found")
 
-    async def update(self, id: UUID, stock: Stock) -> Stock:
+    async def update(self, id: UUID, quantity: int) -> Stock:
         for i in range(len(fake_stock_db)):
             print(id)
             if fake_stock_db[i].id == id:
-                fake_stock_db[i] = stock
-                return stock
-        raise HTTPException(status_code=404, detail="Product not in stock")
+                fake_stock_db[i].quantity = quantity
+                return fake_stock_db[i]
+        raise HTTPException(status_code=404, detail="Stock not found")

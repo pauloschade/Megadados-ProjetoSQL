@@ -52,15 +52,13 @@ async def delete(
 ):
     return await StockService.delete(id)
 
-@StockRouter.put(
+@StockRouter.patch(
     "/{id}",
-    summary = "Updates a stock (quantity or product that is referencing)",
-    description = "If you change the product that the stock is referrencing to\
-        it's stock id will change as well"
+    summary = "Updates a stock quantity"
 )
 async def update(
     id: UUID,
-    stock: StockDto,
+    quantity: int,
     StockService: StockService = Depends()
 ):
-    return await StockService.update(id, stock)
+    return await StockService.update(id, quantity)

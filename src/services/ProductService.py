@@ -29,13 +29,10 @@ class ProductService:
         return await self.productRepository.delete(id)
 
     async def update(self, id: uuid.UUID, product: ProductDto) -> Product:
-        new_product = self._generate_product(product)
-        return await self.productRepository.update(id, new_product)
+        return await self.productRepository.update(id, product)
 
     def _generate_product(self, product: ProductDto):
-        generated_id = uuid.uuid5(uuid.NAMESPACE_DNS, product.name)
         return Product(
-            id = generated_id,
             name=product.name, 
             price = product.price, 
             description = product.description

@@ -26,9 +26,8 @@ class StockService:
     async def find(self, id: uuid.UUID) -> Stock:
         return await self.stockRepository.find(id)
     
-    async def update(self, id: uuid.UUID, stock: StockDto) -> Stock:
-        new_stock = self._generate_stock(stock)
-        return await self.stockRepository.update(id, new_stock)
+    async def update(self, id: uuid.UUID, quantity: int) -> Stock:
+        return await self.stockRepository.update(id, quantity)
 
     async def create_or_add(self, stock: StockDto) -> Stock:
         if await self.productRepository.find(stock.product_id) is None:
@@ -43,15 +42,13 @@ class StockService:
             st.quantity += 1
         else:
             st.quantity += stock.quantity
-        return await self.stockRepository.update(st.id, st)
+        return await self.stockRepository.update(st.id, st.quantity)
     
     async def delete(self, id: uuid.UUID) -> None:
         return await self.stockRepository.delete(id)
 
     def _generate_stock(self, stock: StockDto):
-        generated_id = uuid.uuid5(uuid.NAMESPACE_DNS, str(stock.product_id))
         return Stock(
-            id = generated_id,
             product_id = stock.product_id,
             quantity = stock.quantity
         )
