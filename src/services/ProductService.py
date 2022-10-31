@@ -4,7 +4,7 @@ import uuid
 from fastapi import Depends
 
 from domain.Product import Product
-from dto.ProductDto import ProductDto
+from domain.dto.ProductDto import ProductDto
 from repositories.ProductRepository import ProductRepository
 
 

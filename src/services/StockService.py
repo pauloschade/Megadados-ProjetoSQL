@@ -4,9 +4,9 @@ import uuid
 from fastapi import Depends, HTTPException
 
 from domain.Stock import Stock
-from dto.StockDto import StockDto
+from domain.dto.StockDto import StockDto
 from repositories.StockRepository import StockRepository
-from routers.ProductRouter import delete
+from infrastructure.routers.ProductRouter import delete
 from repositories.ProductRepository import ProductRepository
 
 

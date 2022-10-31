@@ -4,7 +4,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, status
 
 from domain.Product import Product
-from dto.ProductDto import ProductDto
+from domain.dto.ProductDto import ProductDto
 from services.ProductService import ProductService
 
 ProductRouter = APIRouter(
