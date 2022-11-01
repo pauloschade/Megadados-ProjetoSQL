@@ -3,8 +3,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 
-from domain.Stock import Stock
-from domain.dto.StockDto import StockDto
+from domain.Stock import Stock, StockDto
 from services.StockService import StockService
 
 StockRouter = APIRouter(
@@ -33,14 +32,15 @@ async def get(id: UUID, stockService: StockService = Depends()):
 
 @StockRouter.post(
     "/",
+    response_model = Stock,
     status_code=status.HTTP_201_CREATED,
-    summary = "Adds a product to stock or increses quantity (if already in stock)"
+    summary = "Adds a product to stock"
 )
 async def create(
     stock: StockDto,
     StockService: StockService = Depends(),
 ):
-    return await StockService.create_or_add(stock)
+    return await StockService.create(stock)
 
 @StockRouter.delete(
     "/{id}",

@@ -1,12 +1,8 @@
 from typing import List
-from unicodedata import name
 import uuid
 from fastapi import Depends, HTTPException
-
-from domain.Stock import Stock
-from domain.dto.StockDto import StockDto
+from domain.Stock import Stock, StockDto
 from repositories.StockRepository import StockRepository
-from infrastructure.routers.ProductRouter import delete
 from repositories.ProductRepository import ProductRepository
 
 
@@ -29,20 +25,17 @@ class StockService:
     async def update(self, id: uuid.UUID, quantity: int) -> Stock:
         return await self.stockRepository.update(id, quantity)
 
-    async def create_or_add(self, stock: StockDto) -> Stock:
-        if await self.productRepository.find(stock.product_id) is None:
-            raise HTTPException(status_code=404, detail="Product not registered")
-
-        st = await self.stockRepository.find_by_product(stock.product_id)
-        if st is None:
-            new_stock = self._generate_stock(stock)
+    async def create(self, stock: StockDto) -> Stock:
+        product = await self.productRepository.find(stock.product_id)
+        new_stock = self._generate_stock(stock)
+        try:
+            stock = await self.stockRepository.find_by_product(product.id)
+            raise HTTPException(status_code=404, detail=f"Product with id {product.id} already in stock")
+        except:
             return await self.stockRepository.create(new_stock)
+
+
         
-        if stock.quantity is None:
-            st.quantity += 1
-        else:
-            st.quantity += stock.quantity
-        return await self.stockRepository.update(st.id, st.quantity)
     
     async def delete(self, id: uuid.UUID) -> None:
         return await self.stockRepository.delete(id)

@@ -1,10 +1,7 @@
 from typing import List, Optional
 from uuid import UUID
-
 from fastapi import APIRouter, Depends, status
-
-from domain.Product import Product
-from domain.dto.ProductDto import ProductDto
+from domain.Product import Product, ProductDto
 from services.ProductService import ProductService
 
 ProductRouter = APIRouter(
@@ -36,6 +33,7 @@ async def get(id: UUID, productService: ProductService = Depends()):
 
 @ProductRouter.post(
     "/",
+    response_model=Product,
     status_code=status.HTTP_201_CREATED,
     summary = "Registers a product"
 )

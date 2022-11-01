@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from routers.ProductRouter import ProductRouter
-from routers.StockRouter import StockRouter
+from infrastructure.routers.ProductRouter import ProductRouter
+from infrastructure.routers.StockRouter import StockRouter
 
 app = FastAPI()
 

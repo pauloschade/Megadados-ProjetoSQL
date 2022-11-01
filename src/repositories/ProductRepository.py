@@ -1,36 +1,45 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from typing import List
+from sqlalchemy.orm import Session
 from uuid import UUID
-from dto.ProductDto import ProductDto
-from domain.Product import Product
-from db.product_db import fake_product_db
+from domain.Product import Product, ProductDto, ProductModel
+from infrastructure.database import get_db_connection
+
 class ProductRepository:
 
+    db : Session
+
+    def __init__(self, db: Session = Depends(get_db_connection)):
+        self.db = db
+
     async def get(self) -> List[Product]:
-        return fake_product_db
+       return self.db.query(ProductModel).all()
 
     async def find(self, id: UUID) -> Product:
-        for i in fake_product_db:
-            if i.id == id:
-                return i
-        return None
+        product = self.db.query(ProductModel).filter(ProductModel.id == str(id)).first()
+        if product is None:
+            raise HTTPException(status_code=404, detail="Product not found")
+        return product
        
 
     async def create(self, product: Product) -> Product:
-        fake_product_db.append(product)
+        product_model = ProductModel(id = str(product.id), name = product.name, price = product.price, description=product.description)
+        self.db.add(product_model)
+        self.commit()
+        return product_model
 
     async def delete(self, id: UUID) -> None:
-        for i in range(len(fake_product_db)):
-            if fake_product_db[i].id == id:
-                fake_product_db.pop(i)
-                return
-        raise HTTPException(status_code=404, detail="Product not found")
+        product = await self.find(id)
+        self.db.delete(product)
+        self.commit()
 
     async def update(self, id: UUID, product: ProductDto) -> Product:
-        for i in range(len(fake_product_db)):
-            if fake_product_db[i].id == id:
-                fake_product_db[i].name = product.name
-                fake_product_db[i].price = product.price
-                fake_product_db[i].description = product.description
-                return product
-        raise HTTPException(status_code=404, detail="Product not found")
+        prev_product = await self.find(id)
+        prev_product.name = product.name
+        prev_product.price = product.price
+        prev_product.description = product.description
+        self.commit()
+        return prev_product
+
+    def commit(self):
+        return self.db.commit()
