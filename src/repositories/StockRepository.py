@@ -31,18 +31,15 @@ class StockRepository:
     async def create(self, stock: Stock) -> Stock:
         stock_model = StockModel(id = str(stock.id), product_id = stock.product_id ,quantity = stock.quantity )
         self.db.add(stock_model)
-        self.commit()
         return stock_model
 
     async def delete(self, id: UUID) -> None:
         stock = await self.find(id)
         self.db.delete(stock)
-        self.commit()
 
     async def update(self, id: UUID, quantity: int) -> Stock:
         prev_stock = await self.find(id)
         prev_stock.quantity = quantity
-        self.commit()
         return prev_stock
 
     def commit(self):

@@ -6,6 +6,7 @@ import uuid as uuid_pkg
 from domain.base.UUIDBase import UUIDBase, UUIDBaseModel
 from infrastructure.database import Base
 from sqlalchemy.schema import Column
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy import String, Integer, ForeignKey
 
 class Stock(UUIDBase):
@@ -36,7 +37,9 @@ class StockDto(BaseModel):
 class StockModel(UUIDBaseModel, Base):
 
     __tablename__ = "Stock"
-    product_id = Column(String(50), ForeignKey("Product.id"), nullable=False)
+    product_id = Column(String(50), ForeignKey("Product.id", ondelete='CASCADE'), nullable=False)
     quantity = Column(Integer)
+
+    Product = relationship("ProductModel", backref=backref("StockModel", cascade="all,delete"))
 
 

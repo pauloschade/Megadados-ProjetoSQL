@@ -23,13 +23,18 @@ class ProductService:
 
     async def create(self, product: ProductDto) -> Product:
         new_product = self._generate_product(product)
-        return await self.productRepository.create(new_product)
+        creted_prod = await self.productRepository.create(new_product)
+        self.productRepository.commit()
+        return creted_prod
 
     async def delete(self, id: uuid.UUID) -> None:
-        return await self.productRepository.delete(id)
+        await self.productRepository.delete(id)
+        self.productRepository.commit()
 
     async def update(self, id: uuid.UUID, product: ProductDto) -> Product:
-        return await self.productRepository.update(id, product)
+        new_prod = await self.productRepository.update(id, product)
+        self.productRepository.commit()
+        return new_prod
 
     def _generate_product(self, product: ProductDto):
         return Product(

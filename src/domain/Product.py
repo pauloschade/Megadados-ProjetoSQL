@@ -2,6 +2,7 @@ from pydantic import Field, BaseModel
 from typing import Optional
 from domain.base.UUIDBase import UUIDBase, UUIDBaseModel
 from sqlalchemy.schema import Column
+from sqlalchemy.orm import relationship
 from sqlalchemy import String, Float
 from infrastructure.database import Base
 

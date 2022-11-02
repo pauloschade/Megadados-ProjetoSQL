@@ -25,20 +25,17 @@ class ProductRepository:
     async def create(self, product: Product) -> Product:
         product_model = ProductModel(id = str(product.id), name = product.name, price = product.price, description=product.description)
         self.db.add(product_model)
-        self.commit()
         return product_model
 
     async def delete(self, id: UUID) -> None:
         product = await self.find(id)
         self.db.delete(product)
-        self.commit()
 
     async def update(self, id: UUID, product: ProductDto) -> Product:
         prev_product = await self.find(id)
         prev_product.name = product.name
         prev_product.price = product.price
         prev_product.description = product.description
-        self.commit()
         return prev_product
 
     def commit(self):
