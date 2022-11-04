@@ -36,7 +36,7 @@ class StockService:
             created_st = await self.stockRepository.create(new_stock)
             self.stockRepository.commit()
             return created_st
-        raise HTTPException(status_code=404, detail=f"Product with id {product.id} already in stock")
+        raise HTTPException(status_code=400, detail=f"Product with id {product.id} already in stock")
 
 
         

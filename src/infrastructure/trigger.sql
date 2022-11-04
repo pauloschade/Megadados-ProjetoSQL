@@ -1,7 +1,7 @@
 USE Projeto;
 
 delimiter |
-CREATE TRIGGER tx_triger BEFORE INSERT ON Transaction
+CREATE TRIGGER tx_triger AFTER INSERT ON Transaction
 	FOR EACH ROW
     BEGIN
 		UPDATE

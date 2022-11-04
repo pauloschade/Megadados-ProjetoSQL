@@ -29,3 +29,6 @@ class TransactionRepository:
 
     def commit(self):
         return self.db.commit()
+        
+    def rollback(self):
+        return self.db.rollback()

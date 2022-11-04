@@ -35,7 +35,10 @@ async def get(id: UUID, transactionService: TransactionService = Depends()):
     "/",
     response_model=Transaction,
     status_code=status.HTTP_201_CREATED,
-    summary = "Registers a transactions"
+    summary = "Registers a transactions",
+    description = "Input a positive quantity to add stock ammount,\
+    to remove input a negative number. IMPORTANT: if you try to remove\n \
+more than the current stock ammount, the transaction WILL FAIL"
 )
 async def create(
     tx: TransactionDto,

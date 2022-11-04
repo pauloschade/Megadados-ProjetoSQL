@@ -7,7 +7,7 @@ from domain.base.UUIDBase import UUIDBase, UUIDBaseModel
 from infrastructure.database import Base
 from sqlalchemy.schema import Column
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy import String, Integer, ForeignKey
+from sqlalchemy import String, Integer, ForeignKey, CheckConstraint
 
 class Stock(UUIDBase):
 
@@ -39,6 +39,9 @@ class StockModel(UUIDBaseModel, Base):
     __tablename__ = "Stock"
     product_id = Column(String(50), ForeignKey("Product.id", ondelete='CASCADE'), nullable=False)
     quantity = Column(Integer)
+    __table_args__ = (
+        CheckConstraint(quantity >= 0, name='check_quantity_positive'),
+    {})
 
     Product = relationship("ProductModel", backref=backref("StockModel", cascade="all,delete"))
 

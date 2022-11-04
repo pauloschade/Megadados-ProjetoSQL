@@ -28,7 +28,7 @@ db.add(stock_03)
 
 db.commit()
 
-trigger = "CREATE TRIGGER tx_triger BEFORE INSERT ON Transaction FOR EACH ROW BEGIN UPDATE Stock SET Stock.quantity = Stock.quantity + NEW.quantity WHERE Stock.id = NEW.stock_id; END;"
+trigger = "CREATE TRIGGER tx_triger AFTER INSERT ON Transaction FOR EACH ROW BEGIN UPDATE Stock SET Stock.quantity = Stock.quantity + NEW.quantity WHERE Stock.id = NEW.stock_id; END;"
 
 statement = text(trigger)
 
