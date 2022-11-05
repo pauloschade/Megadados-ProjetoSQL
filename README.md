@@ -15,7 +15,7 @@ DBNAME={YOUR_DB_NAME}
 IP={LOCAL_IP}
 ```
 
-4. Run the migrations script
+4. Run the migrations script (**MANDATORY FOR THE TRIGGERS TO WORK AND FOR TABLES CREATION**)
 
 ```
 python3 migrate.py
