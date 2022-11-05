@@ -9,7 +9,7 @@ pip3 install requirements.txt
 3. Create a .env file with the following content
 
 ```.env
-USER_NAME= {YOUR_DB_USER}
+USER_NAME={YOUR_DB_USER}
 PASSWD={YOUR_DB_PASSWORD}
 DBNAME={YOUR_DB_NAME}
 IP={LOCAL_IP}
