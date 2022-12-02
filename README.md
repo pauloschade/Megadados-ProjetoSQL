@@ -2,7 +2,7 @@
 1. Install all packages
 
 ```
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 ```
 
 2. Create a database  
